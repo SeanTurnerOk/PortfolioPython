@@ -1,6 +1,7 @@
 from flask_app.config.SQLconnector import MySQLConnection
 import re
 from flask import flash
+#User class instantiated to ensure that no field is left blank or made incorrectly. Methods added to comply with DRY.
 class User:
     def __init__(self,data):
         self.id=data['id']
@@ -10,6 +11,7 @@ class User:
         self.password=data['password']
         self.updated_at=data['updated_at']
         self.created_at=data['created_at']
+    # classmethods used to avoid having to create a user each time one of the methods is used
     @classmethod
     def get_all(cls):
         query="SELECT * FROM users"
@@ -18,21 +20,23 @@ class User:
         for each in results:
             users.append(cls(each))
         return users
+    #Arguments must be in a dictionary with key matching the variable name. This keeps bad actors from using SQL injection.
     @classmethod
-    def getByEmail(cls,email):
+    def getByEmail(cls, email):
         query='SELECT * FROM users WHERE email=%(email)s'
         data=MySQLConnection.connectToMySQL('python_project').query_db(query, email)
         return data[0]
     @classmethod
     def getNameById(cls,id):
         query='SELECT * FROM users WHERE id = %(id)s'
-        data=MySQLConnection.connectToMySQL('python_project').query_db(query)
+        data=MySQLConnection.connectToMySQL('python_project').query_db(query, id)
         return data[0]['firstName']+' '+data[0]['lastName']
     @classmethod
     def save(cls, data):
         data['id']=len(cls.get_all())+1
         query="INSERT INTO users (id, firstName, lastName, password, email) VALUES (%(id)s,%(firstName)s,%(lastName)s,%(password)s,%(email)s)"
         return MySQLConnection.connectToMySQL('python_project').query_db(query,data)
+    #Validate User settings. Everything must be at least three letters. If anything fails, should flash message to user.
     @staticmethod
     def validateUser(user):
         is_valid=True

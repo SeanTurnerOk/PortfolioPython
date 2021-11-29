@@ -8,7 +8,8 @@
     <link rel="stylesheet" url={{url_for("static", filename="style.css")}}>
 </head>
 <body>
-    Hello, {{userFirstName}}. Here is a graph showing AAPL's open prices over the years
+    <!-- userFirstName used both to personalize the message, and to keep someone from bypassing the login screen -->
+    <h5>Hello, {{userFirstName}}. Here is a graph showing AAPL's open prices over the years</h5>
     <img src='{{graph}}'/>
 </body>
 </html>

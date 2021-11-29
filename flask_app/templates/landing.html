@@ -6,19 +6,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href={{url_for('static', filename="stlye.css" )}}>
+    <link rel="stylesheet" href={{url_for('static', filename="style.css" )}}>
 </head>
 
 <body>
+    <!-- Flashed messages appear at the top of the screen if present -->
     {%with messages=get_flashed_messages()%}
     {% if messages %}
     {%for message in messages %}
-    <p>{{message}}</p>
+    <p class='warningText'>{{message}}</p>
     {%endfor%}
     {%endif %}
     {%endwith%}
     <h1> Login Here</h1>
-    <form action="checker" method="post">
+    <form action="/checker" method="post">
+        <!-- Labels provided for accessibility -->
         <label for="email">Email</label>
         <input type="text" name="email" id="email">
         <label for="password">Password</label>
