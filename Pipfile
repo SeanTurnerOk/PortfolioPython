@@ -6,6 +6,10 @@ name = "pypi"
 [packages]
 flask = "*"
 flask-bcrypt = "*"
+requests = "*"
+yfinance = "*"
+pandas = "*"
+matplotlib = "*"
 
 [dev-packages]
 

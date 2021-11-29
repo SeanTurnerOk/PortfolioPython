@@ -21,7 +21,7 @@ class User:
     @classmethod
     def getByEmail(cls,email):
         query='SELECT * FROM users WHERE email=%(email)s'
-        data=MySQLConnection.connectToMySQL('python_project').query_db(query)
+        data=MySQLConnection.connectToMySQL('python_project').query_db(query, email)
         return data[0]
     @classmethod
     def getNameById(cls,id):
@@ -32,7 +32,7 @@ class User:
     def save(cls, data):
         data['id']=len(cls.get_all())+1
         query="INSERT INTO users (id, firstName, lastName, password, email) VALUES (%(id)s,%(firstName)s,%(lastName)s,%(password)s,%(email)s)"
-        return MySQLConnection.connectToMySQL('exam').query_db(query,data)
+        return MySQLConnection.connectToMySQL('python_project').query_db(query,data)
     @staticmethod
     def validateUser(user):
         is_valid=True
@@ -51,7 +51,7 @@ class User:
         if len(user['password'])<3:
             flash('Password must be at least three characters.')
             is_valid=False
-        if not re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+/.[a-zA-Z0-9._-]+$').match(user['email']):
+        if not re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+[.]+[a-zA-Z0-9._-]+$').match(user['email']):
             flash('Invalid email address!')
             is_valid=False
         return is_valid
